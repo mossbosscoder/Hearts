@@ -2,6 +2,8 @@ package default_package;
 
 
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 
@@ -18,9 +20,7 @@ public class Table extends JPanel {
 
     // the state of the game logic
     
-
-    public boolean playing = false; // whether the game is running
-    private JLabel status; // Current status text (i.e. Running...)
+    ArrayList<JComponent> contents = new ArrayList<>();
 
     // Game constants
     public static final int COURT_WIDTH = 200;
@@ -30,33 +30,22 @@ public class Table extends JPanel {
         // creates border around the court area, JComponent method
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setBackground(Color.GRAY);
-
-
-        // Enable keyboard focus on the court area.
-        // When this component has the keyboard focus, key
-        // events will be handled by its key listener.
-        setFocusable(true);
-
-        // This key listener allows the square to move as long
-        // as an arrow key is pressed, by changing the square's
-        // velocity accordingly. (The tick method below actually
-        // moves the square.)
         
-
-        this.status = status;
     }
 
-    /**
-     * (Re-)set the game to its initial state.
-     */
-    public void reset() {
-
-
-        playing = true;
-        status.setText("Running...");
-
-        // Make sure that this component has the keyboard focus
-        requestFocusInWindow();
+    public void cardPlayed(Card c){
+        c.getRep().removeMouseListener(c.getML());
+        contents.add(c.getRep());
+    }
+    
+    public void draw(){
+        for(JComponent c: contents){
+            add(c, BorderLayout.EAST);
+        }
+    }
+    
+    public void clear() {
+        contents.removeAll(contents);
     }
 
 

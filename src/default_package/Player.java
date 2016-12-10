@@ -51,9 +51,9 @@ public class Player{
     
     public Card playCard(){
         if(isUser){
-            return getHand().remove(0);
+            return getHand().getContents().remove(0);
         }else{
-            return getHand().remove(0);
+            return getHand().getContents().remove(0);
         }
     }
     

@@ -1,23 +1,31 @@
 package default_package;
 
 import java.awt.Graphics;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
 
 @SuppressWarnings("serial")
-public class Card extends JComponent implements Comparable<Card>{
+public class Card implements Comparable<Card>{
 
     private final Suit SUIT;
     private final int VAL; 
     private final String img_file;
     private static BufferedImage img;
+    private JButton rep;
+    private MouseListener mL;
     
     public Card(Suit suit, int val){
         if(val < 2 || val > 14){
@@ -28,12 +36,11 @@ public class Card extends JComponent implements Comparable<Card>{
         this.img_file = VAL + "_of_" + SUIT.toString().toLowerCase() + ".png";
         
         try {
-            if (img == null) {
                 img = ImageIO.read(new File(img_file));
-            }
         } catch (IOException e) {
             System.out.println("Internal Error:" + e.getMessage());
         }
+        rep = draw();
     }
     
     public Suit getSuit(){
@@ -44,14 +51,28 @@ public class Card extends JComponent implements Comparable<Card>{
         return VAL;
     }
     
+    public JButton getRep(){
+        return rep;
+    }
+    
+    public MouseListener getML(){
+        return mL;
+    }
+    
+    public void addMouseListener(MouseListener m){
+        mL = m;
+        rep.addMouseListener(m);
+    }
+   
     public boolean canBePlayed(Suit trumps){
         return SUIT.equals(trumps);
     }
     
-    public void draw(JPanel p){
+    public JButton draw(){
+        System.out.println(img_file);
         ImageIcon ima = new ImageIcon(img, null);
-        JLabel l = new JLabel(ima, JLabel.CENTER);
-        p.add(l);
+        JButton button = new JButton(ima);
+        return button;
     }
 
     @Override

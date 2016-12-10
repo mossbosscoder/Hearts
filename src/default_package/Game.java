@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -122,11 +124,28 @@ public class Game implements Runnable {
        //player's hand
        JPanel hand = new JPanel();
        hand.add(new JLabel("Hand: "));
+       
+       user.getHand().shuffle();
+       for(int i = 0; i<13; i++){
+           user.getHand().deal(cpu1);
+           user.getHand().deal(cpu2);
+           user.getHand().deal(cpu3);
+       }
+       System.out.println(user.getHand().getContents().size());
+       System.out.println(user.getHand().getContents());
        for(Card card: user.getHand().getContents()){
-           System.out.println(card);
-           card.draw(hand);
+           hand.add(card.getRep());
+           card.addMouseListener(new MouseAdapter(){
+               public void mouseClicked(MouseEvent e){
+                   gc.cardPlayed(card);
+                   user.getHand().remove(card);
+                   hand.remove(card.getRep());
+                   gc.draw();
+               }
+           });
        }
        g.add(hand);
+       
        
        //status bar
        JPanel status = new JPanel();
@@ -134,6 +153,10 @@ public class Game implements Runnable {
        g.add(status);
        
        g.setLayout(new GridLayout(5, 0));
+       
+       
+      
+       
     }
     
     private void createInstructions(JPanel i, JPanel main, CardLayout c) {

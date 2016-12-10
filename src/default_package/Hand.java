@@ -13,9 +13,8 @@ public class Hand {
         owner = p;
     }
     
-    @SuppressWarnings("unchecked")
     public ArrayList<Card> getContents(){
-        return (ArrayList<Card>) contents.clone();
+        return contents;
     }
     
     public int getSize(){
@@ -34,8 +33,18 @@ public class Hand {
         return contents.add(c);
     }
     
-    public Card remove(int a){
-        return contents.remove(a);
+    public Card remove(Card c){
+        if(!this.getContents().contains(c)){
+            throw new IllegalArgumentException();
+        } 
+        int j = 0;
+        for(int i = 0; i<getSize(); i++){
+            if(get(i).equals(c)){
+                j = i;
+            }
+        }
+        return contents.remove(j);
+      
     }
     
     public static ArrayList<Card> standard(){
@@ -49,7 +58,7 @@ public class Hand {
     }
     
     public void deal(Player p){
-        p.getHand().add(this.remove(0));
+        p.getHand().add(this.getContents().remove(0));
     }
 
     public void shuffle(){
