@@ -23,24 +23,24 @@ public class Table extends JPanel {
     ArrayList<JComponent> contents = new ArrayList<>();
 
     // Game constants
-    public static final int COURT_WIDTH = 200;
+    public static final int COURT_WIDTH = 230;
     public static final int COURT_HEIGHT = 100;
 
     public Table() {
         // creates border around the court area, JComponent method
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setBackground(Color.GRAY);
-        
     }
 
     public void cardPlayed(Card c){
         c.getRep().removeMouseListener(c.getML());
         contents.add(c.getRep());
+        draw();
     }
     
     public void draw(){
         for(JComponent c: contents){
-            add(c, BorderLayout.EAST);
+            add(c);
         }
     }
     

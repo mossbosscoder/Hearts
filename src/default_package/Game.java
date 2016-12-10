@@ -34,21 +34,19 @@ public class Game implements Runnable {
         main.setLayout(c1);
         
         final MainMenu startScreen = new MainMenu(backColor, main, c1);
-        final JPanel game = new JPanel();
         final JPanel instructions = new JPanel();
         final JPanel highscores = new JPanel();
         final JPanel gameSetUp = new JPanel();
         final JPanel gameOver = new JPanel();    
         
         main.add(startScreen, "Start Screen");
-        main.add(game, "Game");
         main.add(instructions, "Instructions");
         main.add(highscores, "Highscores");
         main.add(gameSetUp, "Game Setup");
         main.add(gameOver, "Game Over");
         c1.show(main, "Start Screen");
             
-        createGameSetUp(gameSetUp, game, main, c1);
+        createGameSetUp(gameSetUp, main, c1);
         createInstructions(instructions, main, c1);
         createHighscores(highscores, main, c1);
         createGameOver(gameOver, main, c1);
@@ -57,11 +55,11 @@ public class Game implements Runnable {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        frame.setSize(530, 700);
+        frame.setSize(540, 700);
     }
 
     
-    private void createGameSetUp(JPanel gsu, JPanel game, JPanel main, CardLayout c){
+    private void createGameSetUp(JPanel gsu, JPanel main, CardLayout c){
         
         Font f = new Font(Font.SANS_SERIF, Font.BOLD, 40);
         JLabel l = new JLabel("Enter your Name:", JLabel.CENTER);
@@ -86,78 +84,14 @@ public class Game implements Runnable {
                     c.show(main, "Game Setup");
                 } else{
                     playerName = t.getText();
-                    startGame(game, main, c);
+                    GamePage g = new GamePage(playerName, backColor);
+                    main.add(g, "Game");
                     c.show(main, "Game");
                 }
             }
         });
     }
-   
-    private void startGame(JPanel g, JPanel main, CardLayout c) {
-       final Player user = new Player(playerName, true);
-       final Player cpu1 = new Player("Brint", false);
-       final Player cpu2 = new Player("Meekus", false);
-       final Player cpu3 = new Player("Rufus", false);
-       
-       
-       //top row
-       JPanel top = new JPanel();
-       drawPlayer(cpu2, top);
-       g.add(top);
-       top.setBackground(backColor);
-       
-       //middle row
-       JPanel mid = new JPanel();
-       drawPlayer(cpu3, mid);
-       Table gc = new Table();
-       mid.add(gc);
-       drawPlayer(cpu1, mid);
-       g.add(mid);
-       mid.setBackground(backColor);
-       
-       //bottom row
-       JPanel bottom = new JPanel();
-       drawPlayer(user, bottom);
-       g.add(bottom);
-       bottom.setBackground(backColor);
-       
-       //player's hand
-       JPanel hand = new JPanel();
-       hand.add(new JLabel("Hand: "));
-       
-       user.getHand().shuffle();
-       for(int i = 0; i<13; i++){
-           user.getHand().deal(cpu1);
-           user.getHand().deal(cpu2);
-           user.getHand().deal(cpu3);
-       }
-       System.out.println(user.getHand().getContents().size());
-       System.out.println(user.getHand().getContents());
-       for(Card card: user.getHand().getContents()){
-           hand.add(card.getRep());
-           card.addMouseListener(new MouseAdapter(){
-               public void mouseClicked(MouseEvent e){
-                   gc.cardPlayed(card);
-                   user.getHand().remove(card);
-                   hand.remove(card.getRep());
-                   gc.draw();
-               }
-           });
-       }
-       g.add(hand);
-       
-       
-       //status bar
-       JPanel status = new JPanel();
-       status.add(new JLabel("Status:"));
-       g.add(status);
-       
-       g.setLayout(new GridLayout(5, 0));
-       
-       
-      
-       
-    }
+    
     
     private void createInstructions(JPanel i, JPanel main, CardLayout c) {
         
@@ -234,22 +168,6 @@ public class Game implements Runnable {
                c.first(main);
             }
         });
-    }
-     
-    private void drawPlayer(Player p, JPanel g){
-        Font f = new Font(Font.SANS_SERIF, Font.BOLD, 20);
-        JLabel n = new JLabel(" " + p.getName() + " ");
-        n.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        n.setFont(f);
-        JLabel s = new JLabel(p.getScore() + " (" + p.getScoreThisRound() + ") ");
-        s.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        s.setFont(f);
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panel.add(n);
-        panel.add(s);
-        g.add(panel);
-        
     }
     
     /*

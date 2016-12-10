@@ -34,9 +34,9 @@ public class Hand {
     }
     
     public Card remove(Card c){
-        if(!this.getContents().contains(c)){
+       if(!getContents().contains(c)){
             throw new IllegalArgumentException();
-        } 
+       } 
         int j = 0;
         for(int i = 0; i<getSize(); i++){
             if(get(i).equals(c)){
@@ -58,7 +58,8 @@ public class Hand {
     }
     
     public void deal(Player p){
-        p.getHand().add(this.getContents().remove(0));
+        p.getHand().add(this.get(0));
+        this.remove(this.get(0));
     }
 
     public void shuffle(){

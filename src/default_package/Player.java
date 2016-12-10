@@ -1,12 +1,5 @@
 package default_package;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class Player{
 

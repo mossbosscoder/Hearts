@@ -1,9 +1,5 @@
 package default_package;
 
-import java.awt.Graphics;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,12 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.event.MouseInputListener;
 
-@SuppressWarnings("serial")
 public class Card implements Comparable<Card>{
 
     private final Suit SUIT;
@@ -69,7 +60,6 @@ public class Card implements Comparable<Card>{
     }
     
     public JButton draw(){
-        System.out.println(img_file);
         ImageIcon ima = new ImageIcon(img, null);
         JButton button = new JButton(ima);
         return button;
