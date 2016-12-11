@@ -42,10 +42,12 @@ public class Table extends JPanel {
 
             System.out.println(cards);
             
-            //repaint();
-
             draw();
-            System.out.println("exit Table::cardPlayed");
+            //repaint();
+            revalidate();
+
+            //draw();
+            //System.out.println("exit Table::cardPlayed");
         }
     }
     
@@ -64,11 +66,11 @@ public class Table extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-/*
+
         for(JComponent c: contents){
             add(c);
         }
-*/
+
     }
 
     @Override

@@ -83,6 +83,7 @@ public class Game implements Runnable {
                     GamePage g = new GamePage(playerName, backColor);
                     main.add(g, "Game");
                     c.show(main, "Game");
+                    g.begin();
                 }
             }
         });

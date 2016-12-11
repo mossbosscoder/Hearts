@@ -30,7 +30,7 @@ public class GamePage extends JPanel{
         table = new Table();
         
         deal();
-        draw();
+        //draw();
         /*
         createTopRow();
         createMiddleRow();
@@ -40,10 +40,21 @@ public class GamePage extends JPanel{
       */
         setLayout(new GridLayout(5, 0));
         
+       
+    }
+    
+    public void begin() {
+        
+        System.out.println("GamePage::begin");
+        
         table.cardPlayed(new Card(Suit.DIAMONDS, 14));
         table.cardPlayed(new Card(Suit.HEARTS, 10));
         table.cardPlayed(new Card(Suit.HEARTS, 3));
-       
+        draw();
+        for(Card c: user.getHand().getContents()){
+            addListener(c);
+        }
+        revalidate();
     }
     
     private void createTopRow(){
@@ -76,11 +87,14 @@ public class GamePage extends JPanel{
       //player's hand
         JPanel hand = new JPanel();
         hand.add(new JLabel("Hand: "));
-        
-        
         for(Card card: user.getHand().getContents()){
             hand.add(card.getRep());
-            card.addMouseListener(new MouseAdapter(){
+        }
+        add(hand);
+    }
+    
+    private void addListener(Card card){
+        card.addMouseListener(new MouseAdapter(){
                 public void mouseClicked(MouseEvent e){
                     Card clone = new Card(card.getSuit(), card.getVal());
                     table.cardPlayed(clone);
@@ -93,8 +107,6 @@ public class GamePage extends JPanel{
                     System.out.println("3: " + user.getHand().getContents());
                 }
             });
-        }
-        add(hand);
     }
     
     private void drawStatus(){
