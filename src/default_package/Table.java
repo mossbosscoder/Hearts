@@ -34,12 +34,19 @@ public class Table extends JPanel {
     }
 
     public void cardPlayed(Card c){
-        System.out.println("1");
-        c.getRep().removeMouseListener(c.getML());
-        cards.add(c);
-        contents.add(c.getRep());
-        draw();
-        System.out.println("2");
+        if(!cards.contains(c)){
+            System.out.println("Table::cardPlayed " + c);
+            c.getRep().removeMouseListener(c.getML());
+            cards.add(c);
+            contents.add(c.getRep());
+
+            System.out.println(cards);
+            
+            //repaint();
+
+            draw();
+            System.out.println("exit Table::cardPlayed");
+        }
     }
     
     public void draw(){
@@ -57,6 +64,11 @@ public class Table extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+/*
+        for(JComponent c: contents){
+            add(c);
+        }
+*/
     }
 
     @Override

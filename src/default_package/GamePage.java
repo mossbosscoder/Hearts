@@ -2,6 +2,7 @@ package default_package;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,15 +31,19 @@ public class GamePage extends JPanel{
         
         deal();
         draw();
-      
+        /*
+        createTopRow();
+        createMiddleRow();
+        createBottomRow();
+        drawHand();
+        drawStatus();
+      */
         setLayout(new GridLayout(5, 0));
         
         table.cardPlayed(new Card(Suit.DIAMONDS, 14));
         table.cardPlayed(new Card(Suit.HEARTS, 10));
         table.cardPlayed(new Card(Suit.HEARTS, 3));
        
-        
-        
     }
     
     private void createTopRow(){
@@ -81,6 +86,9 @@ public class GamePage extends JPanel{
                     table.cardPlayed(clone);
                     //System.out.println(user.getHand().getContents());
                     user.getHand().removeCard(card);
+
+                    //repaint();
+
                     draw();
                     System.out.println("3: " + user.getHand().getContents());
                 }
@@ -130,6 +138,17 @@ public class GamePage extends JPanel{
         drawHand();
         drawStatus();
     }
+/*    
+    @Override
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        createTopRow();
+        createMiddleRow();
+        createBottomRow();
+        drawHand();
+        drawStatus();
+    }
+    */
     
     
 }
