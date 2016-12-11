@@ -34,17 +34,12 @@ public class Hand {
     }
     
     public void removeCard(Card c){
-       if(!getContents().contains(c)){
-           //do nothing
-       } 
-        int j = 0;
         for(int i = 0; i<getSize(); i++){
             if(get(i).equals(c)){
-                j = i;
+                contents.remove(i);
+                break;
             }
         }
-        contents.remove(j);
-      
     }
     
     public static ArrayList<Card> standard(){

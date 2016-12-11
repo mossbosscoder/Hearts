@@ -79,10 +79,10 @@ public class GamePage extends JPanel{
                 public void mouseClicked(MouseEvent e){
                     Card clone = new Card(card.getSuit(), card.getVal());
                     table.cardPlayed(clone);
-                    System.out.println(user.getHand().getContents());
+                    //System.out.println(user.getHand().getContents());
                     user.getHand().removeCard(card);
                     draw();
-                    System.out.println("3");
+                    System.out.println("3: " + user.getHand().getContents());
                 }
             });
         }
@@ -122,6 +122,8 @@ public class GamePage extends JPanel{
     }
     
     public void draw(){
+        System.out.println("GamePage::draw");
+        removeAll();
         createTopRow();
         createMiddleRow();
         createBottomRow();
