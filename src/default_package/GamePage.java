@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class GamePage extends JPanel{
 
-    
     private Player user;
     private Player cpu1;
     private Player cpu2;
@@ -80,9 +79,10 @@ public class GamePage extends JPanel{
                 public void mouseClicked(MouseEvent e){
                     Card clone = new Card(card.getSuit(), card.getVal());
                     table.cardPlayed(clone);
-                    user.getHand().remove(card);
-                    table.clear();
+                    System.out.println(user.getHand().getContents());
+                    user.getHand().removeCard(card);
                     draw();
+                    System.out.println("3");
                 }
             });
         }

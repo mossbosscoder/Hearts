@@ -21,6 +21,7 @@ public class Table extends JPanel {
     // the state of the game logic
     
     ArrayList<JComponent> contents = new ArrayList<>();
+    ArrayList<Card> cards = new ArrayList<>();
 
     // Game constants
     public static final int COURT_WIDTH = 230;
@@ -33,9 +34,12 @@ public class Table extends JPanel {
     }
 
     public void cardPlayed(Card c){
+        System.out.println("1");
         c.getRep().removeMouseListener(c.getML());
+        cards.add(c);
         contents.add(c.getRep());
         draw();
+        System.out.println("2");
     }
     
     public void draw(){
@@ -45,6 +49,7 @@ public class Table extends JPanel {
     }
     
     public void clear() {
+        cards.removeAll(cards);
         contents.removeAll(contents);
     }
 

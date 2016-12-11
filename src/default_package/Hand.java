@@ -33,9 +33,9 @@ public class Hand {
         return contents.add(c);
     }
     
-    public Card remove(Card c){
+    public void removeCard(Card c){
        if(!getContents().contains(c)){
-            throw new IllegalArgumentException();
+           //do nothing
        } 
         int j = 0;
         for(int i = 0; i<getSize(); i++){
@@ -43,7 +43,7 @@ public class Hand {
                 j = i;
             }
         }
-        return contents.remove(j);
+        contents.remove(j);
       
     }
     
@@ -59,7 +59,7 @@ public class Hand {
     
     public void deal(Player p){
         p.getHand().add(this.get(0));
-        this.remove(this.get(0));
+        this.removeCard(this.get(0));
     }
 
     public void shuffle(){
