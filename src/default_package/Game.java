@@ -2,16 +2,22 @@ package default_package;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 public class Game implements Runnable {
@@ -40,6 +46,7 @@ public class Game implements Runnable {
         main.add(highscores, "Highscores");
         main.add(gameSetUp, "Game Setup");
         main.add(gameOver, "Game Over");
+        
         c1.show(main, "Start Screen");
             
         createGameSetUp(gameSetUp, main, c1);
@@ -72,8 +79,8 @@ public class Game implements Runnable {
         
         gsu.setBackground(backColor);
         gsu.setLayout(new GridLayout(3, 0));
-        
         b.addActionListener(new ActionListener(){
+            
             public void actionPerformed(ActionEvent e){
                 if(t.getText() == null || t.getText().equals("")){
                     l.setText("<html>Enter your Name:<br>(You must enter something)</html>");
@@ -134,16 +141,41 @@ public class Game implements Runnable {
     
     private void createHighscores(JPanel h, JPanel main, CardLayout c) {
         
-        h.setLayout(new BoxLayout(h, BoxLayout.Y_AXIS));
-        
-        JTextField t = new JTextField("//Highscores ");
-        t.setBackground(backColor);
+        h.setLayout(new BoxLayout(h, BoxLayout.PAGE_AXIS));
+        String line;
+        JPanel p = new JPanel();
+        try{
+            BufferedReader in = new BufferedReader(new FileReader("highscores.txt"));
+            int i = 1;
+            
+            while(i<=10){
+                JLabel l;
+                line = in.readLine();
+                if(line != null){
+                    l = new JLabel(i + " : " + line);
+                }
+                else{
+                    l = new JLabel(i + " : " + "N/A");   
+                }
+                l.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+                l.setHorizontalAlignment(JLabel.CENTER);
+                p.add(l);
+                p.setLayout(new GridLayout(i, 0));
+                p.setBackground(backColor);
+                i++;
+            } 
+            in.close();
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        } 
         JButton back = new JButton("BACK");
         
-        h.add(t);
+        h.add(p);
         h.add(back);
         
         h.setBackground(backColor);
+        
+        
         
         back.addActionListener(new ActionListener(){ 
             public void actionPerformed(ActionEvent e){

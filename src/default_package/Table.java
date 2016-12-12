@@ -67,6 +67,33 @@ public class Table extends JPanel {
         draw();
         revalidate();
     }
+    
+    public int evaluate(){
+        int winner = 0;
+        System.out.println("Cards in Round: " + cards );
+        for(int i = 1; i<cards.size(); i++){
+            if(cards.get(i).compareTo(cards.get(winner)) > 0){
+
+                System.out.print(i+ "/" + winner +"->");
+                winner = i;
+                System.out.println(" " + winner);
+            }
+        }
+        return winner;
+    }
+    
+    public int value(){
+        int v = 0;
+        for(Card c: cards){
+            if(c.getSuit() == Suit.HEARTS){
+                v++;
+            }
+            if(c.toString().equals("QS")){
+                v+=13;
+            }
+        }
+        return v;
+    }
 
 
     @Override

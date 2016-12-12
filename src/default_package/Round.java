@@ -28,6 +28,10 @@ public class Round {
         
     }
     
+    public void setStartToFalse(){
+        start = false;
+    }
+    
     public int getLeader(){
         return leader;
     }
@@ -77,6 +81,8 @@ public class Round {
             if(i%4 == 0){
                 return;
             }
+
+            checkReDeal();
             players[i%4].playCard(g);
             if(g.getTable().getCards().size() == 4){
                 for(Card c: g.getTable().getCards()){
@@ -123,5 +129,22 @@ public class Round {
         
         players[winner].addScore(value);
     }
+    
+    public void checkReDeal(){
+        boolean stillActive = false;
+        for(Player p: players){
+            if(p.getHand().getContents().size() != 0){
+                stillActive = true;
+            }
+        }
+        
+        if(!stillActive){
+            for(Player p: players){
+                p.resetScoreThisRound();
+            }
+            g.newBegin();
+        }
+    }
+    
     
 }
