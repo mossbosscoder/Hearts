@@ -31,6 +31,7 @@ public class Tests {
     @Test public void testAI() {
         Player p1 = new Player("A", false);
         Table t = new Table();
+        GamePage g = new GamePage("", Color.black);
         
         ArrayList<Card> a =  new ArrayList<Card>();
         a.add(new Card(Suit.DIAMONDS, 4));
@@ -41,13 +42,13 @@ public class Tests {
         p1.setHand(new Hand(a, p1));
         
         //Lead lowest card
-        p1.playCard(t);
+        p1.playCard(g);
         assertEquals( "2C", t.getCards().get(0).toString());
         t.clear();
         
         //Follow Suit
         t.cardPlayed(new Card(Suit.DIAMONDS, 10));
-        p1.playCard(t);
+        p1.playCard(g);
         assertEquals( "4D", t.getCards().get(1).toString());
         t.clear();
     }
