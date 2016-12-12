@@ -21,6 +21,7 @@ public class GamePage extends JPanel{
     private Player[] players = new Player[4];
     private Table table;
     private Color backColor;
+    private Round round;
     
     public GamePage(String playerName, Color c){
         backColor = c;
@@ -33,6 +34,8 @@ public class GamePage extends JPanel{
         players[2] = cpu2;
         players[3] = cpu3;
         table = new Table();
+        
+        round = null;
         
         //draw();
         /*
@@ -49,12 +52,40 @@ public class GamePage extends JPanel{
         return table;
     }
     
+    public void setTable(Table t){
+        table = t;
+    }
+    
     public void begin(){
         
         System.out.println("GamePage::begin");
         deal();
         draw();
         revalidate();
+        
+        for(Card c: user.getHand().getContents()){
+            addListener(c);
+        }
+        
+        //find who has the two of clubs
+        int leader = 0;
+        boolean found = false;
+        for(Player p: players){
+            for(Card c: p.getHand().getContents()){
+                if(c.getSuit() == Suit.CLUBS && c.getVal() == 2){
+                    found = true;
+                    break;
+                }
+            }
+            if(found) break;
+            leader++;
+        }
+        round = new Round(leader, players, this, 0);
+        round.playRound();
+        if(leader == 0){
+            round.playRound();
+        }
+        
     }
     
     private void createTopRow(){
@@ -94,14 +125,14 @@ public class GamePage extends JPanel{
     }
     
     public void addListener(Card card){
+        GamePage g = this;
         card.addMouseListener(new MouseAdapter(){
                 public void mouseClicked(MouseEvent e){
                     Card clone = new Card(card.getSuit(), card.getVal());
                     table.cardPlayed(clone);
-                    //System.out.println(user.getHand().getContents());
                     user.getHand().removeCard(card);
-
-                   // playRound();
+                    System.out.println(user);
+                    round.playRound();
 
                     draw();
                     System.out.println("3: " + user.getHand().getContents());
@@ -172,7 +203,7 @@ public class GamePage extends JPanel{
     }
     */
     
-    public void playRound(){
+ /*   public void playRound(){
         boolean gameOver = false;
         while(!gameOver){
             int leader = 0;
@@ -214,7 +245,7 @@ public class GamePage extends JPanel{
             }
           }
         
-    }
+    } */
     
     
     
