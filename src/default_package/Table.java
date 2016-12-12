@@ -24,8 +24,8 @@ public class Table extends JPanel {
     ArrayList<Card> cards = new ArrayList<>();
 
     // Game constants
-    public static final int COURT_WIDTH = 230;
-    public static final int COURT_HEIGHT = 100;
+    public static final int COURT_WIDTH = 200;
+    public static final int COURT_HEIGHT = 70;
 
     public Table() {
         // creates border around the court area, JComponent method

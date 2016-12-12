@@ -1,5 +1,7 @@
 package default_package;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -62,6 +64,8 @@ public class Card implements Comparable<Card>{
     public JButton draw(){
         ImageIcon ima = new ImageIcon(img, null);
         JButton button = new JButton(ima);
+        button.setBackground(Color.white);
+        button.setPreferredSize(new Dimension(40, 56));
         return button;
     }
 
