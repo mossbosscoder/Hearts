@@ -14,11 +14,7 @@ public class Player{
         score = 0;
         scoreThisRound = 0;
         this.isUser = isUser;
-        if(this.isUser){
-            hand = new Hand(Hand.standard(), this);
-        } else{
-            hand = new Hand(new ArrayList<Card>(), this);
-        }
+        hand = new Hand(new ArrayList<Card>(), this);
           
     }
     
@@ -38,16 +34,78 @@ public class Player{
         return hand;
     }
     
+    public void setHand(Hand h){
+        hand = h;
+    }
+    
     public boolean isUser(){
         return isUser;
     }
     
-    public Card playCard(){
-        if(isUser){
-            return getHand().getContents().remove(0);
-        }else{
-            return getHand().getContents().remove(0);
+    public void addScore(int a){
+        score += a;
+        scoreThisRound += a;
+    }
+    
+    public void resetScoreThisRound(){
+        scoreThisRound = 0;
+    }
+    
+    
+    
+    public void playCard(GamePage g){
+        g.draw();
+        g.validate();
+        Suit led = null;
+        if(g.getTable().getCards().size() != 0){
+            led = g.getTable().getCards().get(0).getSuit();
         }
+        boolean canFollow = false;
+        
+        if(isUser){
+            if(led != null){
+                for(int i = 0 ; i<getHand().getContents().size(); i++){
+                        if(getHand().getContents().get(i).canBePlayed(led)){
+                            g.addListener(getHand().getContents().get(i));
+                            g.getTable().cardPlayed(this.getHand().getContents().remove(i));
+                            canFollow = true;
+                            break;
+                    }
+                }
+            }
+            
+            if(canFollow == false){
+                g.getTable().cardPlayed(this.getHand().getContents().remove(0));
+            }
+            
+            for(Card c: getHand().getContents()){
+                g.removeListener(c);
+            }
+            
+     
+            //int i = g.getTable().getCards().size();
+          /* while(g.getTable().getCards().size() == i){
+                System.out.println("STUCK");
+                System.out.println(g.getTable().getCards());
+           }*/
+            
+        }else{
+            if(led != null){
+                for(int i = 0 ; i<getHand().getContents().size(); i++){
+                        if(getHand().getContents().get(i).canBePlayed(led)){
+                        g.getTable().cardPlayed(this.getHand().getContents().remove(i));
+                        canFollow = true;
+                        break;
+                    }
+                }
+            }
+            
+            if(canFollow == false){
+                g.getTable().cardPlayed(this.getHand().getContents().remove(0));
+            }
+            
+        }
+        System.out.println(this + "played");
     }
     
     @Override

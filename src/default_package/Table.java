@@ -20,12 +20,12 @@ public class Table extends JPanel {
 
     // the state of the game logic
     
-    ArrayList<JComponent> contents = new ArrayList<>();
-    ArrayList<Card> cards = new ArrayList<>();
+    private ArrayList<JComponent> contents = new ArrayList<>();
+    private ArrayList<Card> cards = new ArrayList<>();
 
     // Game constants
-    public static final int COURT_WIDTH = 230;
-    public static final int COURT_HEIGHT = 100;
+    public static final int COURT_WIDTH = 200;
+    public static final int COURT_HEIGHT = 70;
 
     public Table() {
         // creates border around the court area, JComponent method
@@ -51,6 +51,10 @@ public class Table extends JPanel {
         }
     }
     
+    public ArrayList<Card> getCards(){
+        return cards;
+    }
+    
     public void draw(){
         for(JComponent c: contents){
             add(c);
@@ -58,8 +62,10 @@ public class Table extends JPanel {
     }
     
     public void clear() {
-        cards.removeAll(cards);
-        contents.removeAll(contents);
+        cards = new ArrayList<>();
+        contents = new ArrayList<>();
+        draw();
+        revalidate();
     }
 
 

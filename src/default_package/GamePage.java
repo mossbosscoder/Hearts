@@ -2,10 +2,10 @@ package default_package;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -18,6 +18,7 @@ public class GamePage extends JPanel{
     private Player cpu1;
     private Player cpu2;
     private Player cpu3;
+    private Player[] players = new Player[4];
     private Table table;
     private Color backColor;
     
@@ -27,9 +28,12 @@ public class GamePage extends JPanel{
         cpu1 = new Player("Brint", false);
         cpu2 = new Player("Meekus", false);
         cpu3 = new Player("Rufus", false);
+        players[0] = user;
+        players[1] = cpu1;
+        players[2] = cpu2;
+        players[3] = cpu3;
         table = new Table();
         
-        deal();
         //draw();
         /*
         createTopRow();
@@ -39,21 +43,17 @@ public class GamePage extends JPanel{
         drawStatus();
       */
         setLayout(new GridLayout(5, 0));
-        
-       
     }
     
-    public void begin() {
+    public Table getTable(){
+        return table;
+    }
+    
+    public void begin(){
         
         System.out.println("GamePage::begin");
-        
-        table.cardPlayed(new Card(Suit.DIAMONDS, 14));
-        table.cardPlayed(new Card(Suit.HEARTS, 10));
-        table.cardPlayed(new Card(Suit.HEARTS, 3));
+        deal();
         draw();
-        for(Card c: user.getHand().getContents()){
-            addListener(c);
-        }
         revalidate();
     }
     
@@ -68,9 +68,9 @@ public class GamePage extends JPanel{
     private void createMiddleRow(){
         //middle row
         JPanel mid = new JPanel();
-        drawPlayer(cpu3, mid);
-        mid.add(table);
         drawPlayer(cpu1, mid);
+        mid.add(table);
+        drawPlayer(cpu3, mid);
         add(mid);
         mid.setBackground(backColor);
     }
@@ -93,7 +93,7 @@ public class GamePage extends JPanel{
         add(hand);
     }
     
-    private void addListener(Card card){
+    public void addListener(Card card){
         card.addMouseListener(new MouseAdapter(){
                 public void mouseClicked(MouseEvent e){
                     Card clone = new Card(card.getSuit(), card.getVal());
@@ -101,12 +101,17 @@ public class GamePage extends JPanel{
                     //System.out.println(user.getHand().getContents());
                     user.getHand().removeCard(card);
 
-                    //repaint();
+                   // playRound();
 
                     draw();
                     System.out.println("3: " + user.getHand().getContents());
                 }
             });
+    }
+    
+    
+    public void removeListener(Card card){
+        card.removeMouseListener(card.getML());
     }
     
     private void drawStatus(){
@@ -133,6 +138,11 @@ public class GamePage extends JPanel{
     }
     
     private void deal(){
+        Hand h = new Hand(Hand.standard(), user);
+        for(Player p: players){
+            p.setHand(new Hand(new ArrayList<Card>(), p));
+        }
+        user.setHand(h);
         user.getHand().shuffle();
         for(int i = 0; i<13; i++){
             user.getHand().deal(cpu1);
@@ -161,6 +171,51 @@ public class GamePage extends JPanel{
         drawStatus();
     }
     */
+    
+    public void playRound(){
+        boolean gameOver = false;
+        while(!gameOver){
+            int leader = 0;
+            boolean found = false;
+            for(Player p: players){
+                for(Card c: p.getHand().getContents()){
+                    if(c.getSuit() == Suit.CLUBS && c.getVal() == 2){
+                        found = true;
+                        break;
+                    }
+                }
+                if(found) break;
+                leader++;
+            }
+            A: {
+                for(int j =0; j<13; j++){
+                Table tab = new Table();
+                table = tab;
+                System.out.println(leader);
+                Trick t = new Trick(leader, players, this, j);
+                leader = t.getWinner();
+                table.clear();
+                
+                }
+                for(Player p:players){
+                    if(p.getScore()>= 100){
+                        System.out.println(p.getScore());
+                        gameOver = true;
+                        break A;
+                    }
+                }
+                for(Player p: players){
+                p.resetScoreThisRound();
+                }
+                deal();
+            }
+            for(Player p: players){
+               System.out.println(p);
+            }
+          }
+        
+    }
+    
     
     
 }

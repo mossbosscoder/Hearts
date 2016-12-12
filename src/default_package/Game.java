@@ -84,6 +84,7 @@ public class Game implements Runnable {
                     main.add(g, "Game");
                     c.show(main, "Game");
                     g.begin();
+                    g.playRound();
                 }
             }
         });
