@@ -82,9 +82,6 @@ public class GamePage extends JPanel{
         }
         round = new Round(leader, players, this, 0);
         round.playRound();
-        if(leader == 0){
-            round.playRound();
-        }
         
     }
     
@@ -132,6 +129,7 @@ public class GamePage extends JPanel{
                     table.cardPlayed(clone);
                     user.getHand().removeCard(card);
                     System.out.println(user);
+                    round.setLeader(1);
                     round.playRound();
 
                     draw();
