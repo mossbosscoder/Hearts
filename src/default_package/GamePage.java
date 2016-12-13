@@ -1,5 +1,6 @@
 package default_package;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -22,9 +23,11 @@ public class GamePage extends JPanel{
     private Table table;
     private Color backColor;
     private Round round;
-    private boolean gameOver;
+    private JPanel main;
+    private CardLayout c;
     
-    public GamePage(String playerName, Color c){
+    
+    public GamePage(String playerName, Color c, JPanel mainPanel, CardLayout c1){
         backColor = c;
         user = new Player(playerName, true);
         cpu1 = new Player("Brint", false);
@@ -36,7 +39,8 @@ public class GamePage extends JPanel{
         players[3] = cpu3;
         table = new Table();
         round = null;
-        gameOver = false;
+        main = mainPanel;
+        this.c = c1;
         
         //draw();
         /*
@@ -82,12 +86,13 @@ public class GamePage extends JPanel{
             leader++;
         }
         System.out.println("---------------------------");
+        System.out.println(found + ": " + leader + ": " + players[leader]);
         System.out.println(players[0]);
         System.out.println(players[1]);
         System.out.println(players[2]);
         System.out.println(players[3]);
         System.out.println("---------------------------");
-        round = new Round(leader, players, this, 0);
+        round = new Round(leader, players, this);
         round.playRound();
         
     }
@@ -114,15 +119,18 @@ public class GamePage extends JPanel{
             }
             if(found) break;
             leader++;
+            
         }
         System.out.println("--------------------biuhjnjlbkjn-------");
+        System.out.println(found + ": " + leader + ": " + players[leader]);
         System.out.println(players[0]);
         System.out.println(players[1]);
         System.out.println(players[2]);
         System.out.println(players[3]);
         System.out.println("-----------------------.,.,...----");
-        round = new Round(leader, players, this, 0);
-        
+        round.setLeader(leader);
+        round.setActualLeader(leader);
+        round.playRound();
     }
     
     
@@ -169,8 +177,8 @@ public class GamePage extends JPanel{
                     Card clone = new Card(card.getSuit(), card.getVal());
                     table.cardPlayed(clone);
                     user.getHand().removeCard(card);
-                    System.out.println(user);
-                    
+
+                    System.out.println(user.getName()+ " played");
                     round.setStartToFalse();
                     round.setLeader(1);
                     round.playRound();
@@ -181,7 +189,6 @@ public class GamePage extends JPanel{
                     }
 
                     draw();
-                    System.out.println("3: " + user.getHand().getContents());
                 }
             });
     }
@@ -229,7 +236,7 @@ public class GamePage extends JPanel{
     }
     
     public void draw(){
-        System.out.println("GamePage::draw");
+       // System.out.println("GamePage::draw");
         removeAll();
         createTopRow();
         createMiddleRow();
@@ -237,6 +244,16 @@ public class GamePage extends JPanel{
         drawHand();
         drawStatus();
     }
+    
+    public void end(){
+        System.out.print("GamePage::END::START");
+        GameOverPage g = new GameOverPage(players, main, c);
+        main.add(g, "Game Over");
+        c.show(main, "Game Over");
+        System.out.print("GamePage::END::END");
+    }
+    
+    
 /*    
     @Override
     public void paintComponent(Graphics g){

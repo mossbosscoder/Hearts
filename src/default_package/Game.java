@@ -38,21 +38,18 @@ public class Game implements Runnable {
         final MainMenu startScreen = new MainMenu(backColor, main, c1);
         final JPanel instructions = new JPanel();
         final JPanel highscores = new JPanel();
-        final JPanel gameSetUp = new JPanel();
-        final JPanel gameOver = new JPanel();    
+        final JPanel gameSetUp = new JPanel();    
         
         main.add(startScreen, "Start Screen");
         main.add(instructions, "Instructions");
         main.add(highscores, "Highscores");
         main.add(gameSetUp, "Game Setup");
-        main.add(gameOver, "Game Over");
         
         c1.show(main, "Start Screen");
             
         createGameSetUp(gameSetUp, main, c1);
         createInstructions(instructions, main, c1);
         createHighscores(highscores, main, c1);
-        createGameOver(gameOver, main, c1);
         
         frame.add(main);
         frame.pack();
@@ -87,7 +84,7 @@ public class Game implements Runnable {
                     c.show(main, "Game Setup");
                 } else{
                     playerName = t.getText();
-                    GamePage g = new GamePage(playerName, backColor);
+                    GamePage g = new GamePage(playerName, backColor, main, c);
                     main.add(g, "Game");
                     c.show(main, "Game");
                     g.begin();
@@ -108,9 +105,7 @@ public class Game implements Runnable {
                 + " Scoring </h2>During the hand, each player counts the number of hearts he"
                 + " has taken and the queen of spades. Each heart is worth <b>1 point</b>, "
                 + "and the queen is worth <b>13 points</b> to total <b>26 points per hand</b>."
-                + " <br> <br> If, however, one player accrues all 26 points in one hand, all other"
-                + " players will be given 26 points, while the that player receives no points."
-                + " This tactic can be referred to as \"The Backdoor\".<h2>The Play</h2>Hearts is "
+                + " <br> <br><h2>The Play</h2>Hearts is "
                 + " a four player game. At the beginning of each round, 13 cards are dealt to each"
                 + " player. The player with the \"2 of Clubs\" leads with that card and play "
                 + "contunues counterclockwise. Each player must follow suit if possible. If the "
@@ -120,7 +115,7 @@ public class Game implements Runnable {
                 + " plays the highest card of the led suit. The winner leads for the next trick. "
                 + "A heart cannot be lead unless the queen of spades or another heart has already"
                 + " been played. The queen may be led at any point.<h2>Controls</h2> To play a "
-                + "card in your hand click on it, and then click on the table in the middle. You"
+                + "card in your hand click on its icon at the bottom of the screen. You"
                 + " will need to choose a card that can be played by the rules of the game."
                 + " Remember, always follow suit if possible. <br><br></body></html> ", JLabel.CENTER);
         
@@ -139,7 +134,7 @@ public class Game implements Runnable {
         });
     }
     
-    private void createHighscores(JPanel h, JPanel main, CardLayout c) {
+    public void createHighscores(JPanel h, JPanel main, CardLayout c) {
         
         h.setLayout(new BoxLayout(h, BoxLayout.PAGE_AXIS));
         String line;
@@ -185,7 +180,7 @@ public class Game implements Runnable {
     }
     
     
-    private void createGameOver(JPanel g, JPanel main, CardLayout c) {
+ /*   private void createGameOver(JPanel g, JPanel main, CardLayout c) {
         JLabel l = new JLabel("GAME OVER");
         JButton back = new JButton("BACK");
         
@@ -197,7 +192,7 @@ public class Game implements Runnable {
                c.first(main);
             }
         });
-    }
+    } */
     
     /*
      * Main method run to start and run the game Initializes the GUI elements

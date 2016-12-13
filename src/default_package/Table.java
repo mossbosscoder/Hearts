@@ -71,7 +71,7 @@ public class Table extends JPanel {
     public int evaluate(){
         int winner = 0;
         System.out.println("Cards in Round: " + cards );
-        for(int i = 1; i<cards.size(); i++){
+        for(int i = 0; i<cards.size(); i++){
             if(cards.get(i).compareTo(cards.get(winner)) > 0){
 
                 System.out.print(i+ "/" + winner +"->");

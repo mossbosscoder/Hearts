@@ -1,5 +1,6 @@
 package default_package;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Player{
 
@@ -51,46 +52,91 @@ public class Player{
         scoreThisRound = 0;
     }
     
-    
-    
-    public void playCard(GamePage g){
+    public void playCard(GamePage g, boolean heartsBroken){
         g.draw();
         g.validate();
         Suit led = null;
+        ArrayList<Card> playables = new ArrayList<>();
+        Card played;
+        
         if(g.getTable().getCards().size() != 0){
             led = g.getTable().getCards().get(0).getSuit();
         }
-        boolean canFollow = false;
-        ArrayList<Card> playables = new ArrayList<>();
-        if(led != null){
-            for(int i = 0 ; i<getHand().getContents().size(); i++){
-                if(getHand().getContents().get(i).canBePlayed(led)){
-                    playables.add(getHand().getContents().get(i));
-                    canFollow = true;
+        
+        if(led == null){
+            if(!heartsBroken){
+                for(Card c: this.getHand().getContents()){
+                    if(c.getSuit() != Suit.HEARTS){
+                        playables.add(c);
+                    }
                 }
+                System.out.println(playables);
+                if(playables.size() == 0){
+                    for(Card c: this.getHand().getContents()){
+                        playables.add(c);
+                    }
+                }
+            } else{
+                for(Card c: this.getHand().getContents()){
+                    playables.add(c);
+                }
+            }
+            int minIndex = 0;
+            for(int i = 1; i<playables.size(); i++){
+                if(playables.get(i).getVal() < playables.get(minIndex).getVal()){
+                    minIndex = i;
+                }
+            }
+            played = playables.get(minIndex);
+            g.getTable().cardPlayed(playables.get(minIndex));
+        }
+        
+        else{
+            boolean canFollow = false;
+            if(led != null){
+                for(int i = 0 ; i<getHand().getContents().size(); i++){
+                    if(getHand().getContents().get(i).canBePlayed(led)){
+                        playables.add(getHand().getContents().get(i));
+                        canFollow = true;
+                    }
+                }
+            }
+            if(canFollow == false){
+                playables.addAll(getHand().getContents());
+                int maxIndex = 0;
+                for(int i = 1; i<playables.size(); i++){
+                    if(playables.get(i).toString().equals("QS")){
+                        maxIndex = i;
+                        break;
+                    }
+                    if(playables.get(i).getVal() > playables.get(maxIndex).getVal()){
+                        maxIndex = i;
+                    }
+                }
+                played = playables.get(maxIndex);
+                g.getTable().cardPlayed(playables.get(maxIndex));
+                
+            } else{
+                int win = g.getTable().evaluate();
+                Card winning = g.getTable().getCards().get(win);
+                
+                int index = 0;
+                Collections.sort(playables);
+                for(int i = 1; i<playables.size(); i++){
+                    if(playables.get(i).getVal() < winning.getVal()){
+                        index = i;
+                    }
+                }
+                played = playables.get(index);
+                g.getTable().cardPlayed(playables.get(index)); 
             }
             
         }
-        if(canFollow == false){
-            playables.addAll(getHand().getContents());
-        }
         
-        int minIndex = 0;
-        for(int i = 1; i<playables.size(); i++){
-            if(playables.get(i).getVal() < playables.get(minIndex).getVal()){
-                minIndex = i;
-            }
-        }
-        g.getTable().cardPlayed(playables.get(minIndex));
-        for(Card c : getHand().getContents()){
-            if(c.toString().equals(playables.get(minIndex).toString())){
-                getHand().removeCard(c);
-
-                break;
-            }
-        }
+        System.out.println("Played::::" + played.toString());
+        getHand().removeCard(played);
         
-        System.out.println(this + "played");
+        System.out.println(this.getName() + " played");
     }
     
     @Override
